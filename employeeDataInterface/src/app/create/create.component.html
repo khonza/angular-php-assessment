@@ -1,0 +1,47 @@
+<section class="create-employee-form-container">
+    <div class="create-employee-form">
+        <form [formGroup]="employeeDataForm" (ngSubmit)="onSubmit()">
+            <h1>Create Form</h1>
+            <fieldset>
+              <h2>First Name</h2>
+              <input matInput required name="firstName" formControlName="firstName" placeholder="John">
+              <!-- <span class="form-error" *ngIf="employeeDataForm.get('firstName').hasError('required') && employeeDataForm.get('firstName').touched">
+                Please enter your first name(s)
+              </span> -->
+            </fieldset>
+        
+            <fieldset>
+                <h2>Last Name</h2>
+                <input matInput required name="lastName" formControlName="lastName" placeholder="Doe">
+            </fieldset>
+            
+            <fieldset>
+                <h2>Email</h2>
+                <input 
+                    matInput
+                    name="email"
+                    placeholder="pat@example.com"
+                    formControlName="email"
+                    required
+                />
+                <!-- @if (employeeDataForm.invalid) {
+                <mat-error>This is a test</mat-error>
+                } -->
+            </fieldset>
+            
+            <fieldset>
+                <h2>Phone Number</h2>
+                <input matInput name="phoneNumber" type="number" required formControlName="phoneNumber" placeholder="072 679 7579">
+            </fieldset>
+        
+            <fieldset>
+                <h2>Message</h2>
+                <textarea matInput name="message" required formControlName="message" placeholder="comment here..."></textarea>
+            </fieldset>
+
+            <fieldset>
+                <button class="btn-save" name="submit" type="submit">Save</button>
+            </fieldset>
+        </form>  
+    </div>
+</section>
