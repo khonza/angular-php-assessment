@@ -1,0 +1,16 @@
+<div>
+    <ul class="employee-data-list">
+        @for (employee of employees; track employee) {
+            <li class="employee-data">
+                <span>ID: {{employee.id}}</span>
+                <span>Name: {{employee.firstName}}</span>
+                <span>Surname: {{employee.lastName}}</span>
+                <span>Phone Number: {{employee.phoneNumber}}</span>
+                <span>Email : {{employee.email}}</span>
+                <span>Message: {{employee.message}}</span>
+                <span>Created: {{employee.created}}</span>
+                <span>Last updated: {{employee.lastUpdated}}</span>
+            </li>
+         }
+    </ul>
+</div>
