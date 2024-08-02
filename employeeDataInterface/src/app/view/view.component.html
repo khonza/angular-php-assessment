@@ -1,16 +1,25 @@
-<div>
-    <ul class="employee-data-list">
-        @for (employee of employees; track employee) {
-            <li class="employee-data">
-                <span>ID: {{employee.id}}</span>
-                <span>Name: {{employee.firstName}}</span>
-                <span>Surname: {{employee.lastName}}</span>
-                <span>Phone Number: {{employee.phoneNumber}}</span>
-                <span>Email : {{employee.email}}</span>
-                <span>Message: {{employee.message}}</span>
-                <span>Created: {{employee.created}}</span>
-                <span>Last updated: {{employee.lastUpdated}}</span>
-            </li>
-         }
-    </ul>
+<div class="container">
+    <div class="row align-items-start border bg-secondary text-white rounded">
+      <div class="col">First Name(s)</div>
+      <div class="col">Last Name</div>
+      <div class="col">Email</div>
+      <div class="col">Phone Number</div>
+      <div class="col">Message</div>
+      <div class="col bg-secondary">Action</div>
+    </div>
+    @for (employee of employees; track employee.id) {
+        <div class="row align-items-start">
+            <div class="col">{{employee.firstName}}</div>
+            <div class="col border-start">{{employee.lastName}}</div>
+            <div class="col border-start">{{employee.email}}</div>
+            <div class="col border-start">{{employee.phoneNumber}}</div>
+            <div class="col border-start">{{employee.message}}</div>
+            <div class="col border-start">
+              <button type="button" class="btn btn-warning btn-sm" (click)="navigateToUpdateEmployee(employee.id)">Edit</button>
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteEmployeeById(employee.id)">Delete</button>
+            </div>
+        </div>
+     }
 </div>
+<br />
+<create></create>

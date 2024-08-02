@@ -1,47 +1,57 @@
-<section class="create-employee-form-container">
-    <div class="create-employee-form">
-        <form [formGroup]="employeeDataForm" (ngSubmit)="onSubmit()">
-            <h1>Create Form</h1>
-            <fieldset>
-              <h2>First Name</h2>
-              <input matInput required name="firstName" formControlName="firstName" placeholder="John">
-              <!-- <span class="form-error" *ngIf="employeeDataForm.get('firstName').hasError('required') && employeeDataForm.get('firstName').touched">
-                Please enter your first name(s)
-              </span> -->
-            </fieldset>
-        
-            <fieldset>
-                <h2>Last Name</h2>
-                <input matInput required name="lastName" formControlName="lastName" placeholder="Doe">
-            </fieldset>
-            
-            <fieldset>
-                <h2>Email</h2>
-                <input 
-                    matInput
-                    name="email"
-                    placeholder="pat@example.com"
-                    formControlName="email"
-                    required
-                />
-                <!-- @if (employeeDataForm.invalid) {
-                <mat-error>This is a test</mat-error>
-                } -->
-            </fieldset>
-            
-            <fieldset>
-                <h2>Phone Number</h2>
-                <input matInput name="phoneNumber" type="number" required formControlName="phoneNumber" placeholder="072 679 7579">
-            </fieldset>
-        
-            <fieldset>
-                <h2>Message</h2>
-                <textarea matInput name="message" required formControlName="message" placeholder="comment here..."></textarea>
-            </fieldset>
+<ng-template #addEmployee let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Add New Employee</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form #form="ngForm" [formGroup]="employeeDataForm" (ngSubmit)="onSubmit()" class="form" (keydown.enter)="$event.stopPropagation()">
+            <div class="card mt-3">
+              <div class="card-body">
+                <div class="form-group">
+                    <label for="firstName">First Name(s)</label>
+                    <input id="firstName" type="text" formControlName="firstName" class="form-control" required>
+                    <div class="text-danger">
+                      <small>First Name is required.</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input id="lastName" type="text" formControlName="lastName" class="form-control" required>
+                    <div class="text-danger">
+                      <small>Last Name is required.</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input id="email" type="email" formControlName="email" class="form-control">
+                  <div class="text-danger">
+                      <small>Email is required.</small>
+                    
+                    
+                    <small>Email is invalid.</small>
+                  </div>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input id="phoneNumber" type="text" maxlength="10" formControlName="phoneNumber" class="form-control"required>
+                    <div class="text-danger">
+                      <small>Last Name is required.</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label for="message">Message</label>
+                  <textarea matInput   class="form-control" id="message" name="message" fromControlName="message" rows="3" required></textarea>
+                </div>
+                <br />
+                <div class="form-group">
+                  <button type="submit" class="btn btn-success" (click)="modal.close('Save click')">Add new employee</button>
+                </div>
+              </div>
+            </div>
+          </form>
+	</div>
+	<div class="modal-footer">
+	</div>
+</ng-template>
 
-            <fieldset>
-                <button class="btn-save" name="submit" type="submit">Save</button>
-            </fieldset>
-        </form>  
-    </div>
-</section>
+<button class="btn btn-lg btn-outline-primary" (click)="open(addEmployee)">Add New Employee</button>

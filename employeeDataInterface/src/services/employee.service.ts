@@ -13,4 +13,12 @@ export class EmployeeService {
   getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>('http://localhost/employeeAPI/getEmployees.php');
   }
+
+  deleteEmployeeById(id:number) {
+    return this.http.delete<Employee[]>('http://localhost/employeeAPI/deleteEmployee.php?id=' + id);
+  }
+
+  insertEmployee(employee:Employee) {
+    return this.http.post<Employee>('http://localhost/employeeAPI/insertEmployee.php', employee);
+  }
 }
