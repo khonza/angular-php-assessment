@@ -7,7 +7,7 @@ import { UpdateEmployeeComponent } from './update-employee/update-employee.compo
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CreateComponent, ViewComponent, UpdateEmployeeComponent],
+  imports: [RouterOutlet, ViewComponent, UpdateEmployeeComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

@@ -1,4 +1,5 @@
-<div class="table-responsive">
+<div class="container mt-3">
+  <div class="table-responsive">
     <table class="table table-striped table-hover">
       <thead>
         <tr>
@@ -11,21 +12,20 @@
         </tr>
       </thead>
       <tbody>
-        @for (employee of employees; track employee.id) {
-            <tr>
-                <td>{{employee.firstName}}</td>
-                <td>{{employee.lastName}}</td>
-                <td>{{employee.email}}</td>
-                <td>{{employee.phoneNumber}}</td>
-                <td>{{employee.message}}</td>
-                <td>
-                  <button type="button" class="btn btn-warning btn-sm" (click)="navigateToUpdateEmployee(employee.id)">Edit</button>
-                  <button type="button" class="btn btn-danger btn-sm" (click)="deleteEmployeeById(employee.id)">Delete</button>
-                </td>
-            </tr>
-         }
+        <tr *ngFor="let employee of employees" [attr.data-id]="employee.id">
+          <td>{{ employee.firstName }}</td>
+          <td>{{ employee.lastName }}</td>
+          <td>{{ employee.email }}</td>
+          <td>{{ employee.phoneNumber }}</td>
+          <td>{{ employee.message }}</td>
+          <td>
+            <button type="button" class="btn btn-warning btn-sm" (click)="navigateToUpdateEmployee(employee.id)">Edit</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="confirmDelete(employee.id, employee.firstName, employee.lastName)">Delete</button>
+          </td>
+        </tr>
       </tbody>
     </table>
+    <br />
+    <create></create>
+  </div>
 </div>
-<br />
-<create></create>

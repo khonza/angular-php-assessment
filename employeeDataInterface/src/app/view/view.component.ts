@@ -1,16 +1,14 @@
-import { Component, ElementRef, inject, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/employees.model';
-import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
-import { EventEmitter } from 'events';
 import { CreateComponent } from '../create/create.component';
-import { Router, RouterModule } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'view',
@@ -24,81 +22,56 @@ import { ToastrService } from 'ngx-toastr';
     RouterModule
   ],
   templateUrl: './view.component.html',
-  styleUrl: './view.component.scss'
+  styleUrl: './view.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class ViewComponent implements OnInit, OnDestroy{
-  private employeeSubscription: Subscription;
-  public employees: Employee[];
-  @Output() updateEmployeeEmitter = new EventEmitter<any>();
-  updateEmployeeForm:FormGroup;
-  private modalService = inject(NgbModal);
-	closeResult = '';
+export class ViewComponent implements OnInit, OnDestroy {
+  employees: Employee[] = [];
+  private employeeSubscription: Subscription = new Subscription();
 
   constructor(
     private employeeService: EmployeeService,
     private router: Router,
-    private toast:ToastrService
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.setEmployees();
+    this.loadEmployees();
   }
 
-  setEmployees(): void{
-     this.employeeService.getEmployees().subscribe(
-      (data: Employee[]) => {
-        this.employees = data;
-      }
+  loadEmployees(): void {
+    this.employeeSubscription.add(
+      this.employeeService.getEmployees().subscribe(
+        (data: Employee[]) => this.employees = data,
+        error => this.toastr.error('Failed to load employees.')
+      )
     );
   }
 
-  navigateToUpdateEmployee(id:number):void {
+  navigateToUpdateEmployee(id: number): void {
     this.router.navigate(['update-employee', id]);
   }
 
-  open(content: TemplateRef<any>) {
-		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
-			(result) => {
-				this.closeResult = `Closed with: ${result}`;
-			},
-			(reason) => {
-				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-			},
-		);
-	}
-
-  goToItemDetails(itemID: number) {
-    this.router.navigate(['/items', itemID]);
-  }
-
-  private getDismissReason(reason: any): string {
-		switch (reason) {
-			case ModalDismissReasons.ESC:
-				return 'by pressing ESC';
-			case ModalDismissReasons.BACKDROP_CLICK:
-				return 'by clicking on a backdrop';
-			default:
-				return `with: ${reason}`;
-		}
-	}
-
-  deleteEmployeeById(id:any):void {
-    let employeeName:string = this.setEmployeeName(id);
-    if(confirm("Are you sure you want to delete "+ employeeName )) {
-      this.employeeService.deleteEmployeeById(id).subscribe(response =>
-      {
-        this.employees = this.employees.filter(employee => employee.id != id);
-        this.toast.success(`${employeeName} (${id}) has been deleted.`);
-      });
+  confirmDelete(id: number, firstName: string, lastName: string): void {
+    const employeeName = `${firstName} ${lastName}`;
+    if (confirm(`Are you sure you want to delete ${employeeName}?`)) {
+      this.deleteEmployeeById(id);
     }
   }
 
-  private setEmployeeName(id:number):string {
-    let employee = this.employees.find(employee => employee.id === id);
-    return employee?.firstName + ' ' + employee?.lastName;
+  deleteEmployeeById(id: number): void {
+    this.employeeSubscription.add(
+      this.employeeService.deleteEmployeeById(id).subscribe(
+        () => {
+          this.employees = this.employees.filter(employee => employee.id !== id);
+          this.toastr.success('Employee has been deleted.');
+        },
+        error => this.toastr.error('Failed to delete employee.')
+      )
+    );
   }
 
   ngOnDestroy(): void {
-    if(this.employeeSubscription) this.employeeSubscription.unsubscribe();
+    this.employeeSubscription.unsubscribe();
   }
 }

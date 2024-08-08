@@ -4,18 +4,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/employees.model';
 import { phoneNumberValidator } from '../../models/phone-number.validator'; // Adjust the path as needed
-import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'update-employee',
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    MatInputModule,
-    CommonModule,
-    NgbDatepickerModule
+    CommonModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './update-employee.component.html',
