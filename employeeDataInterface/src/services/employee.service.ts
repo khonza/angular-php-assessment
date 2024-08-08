@@ -14,11 +14,19 @@ export class EmployeeService {
     return this.http.get<Employee[]>('http://localhost/employeeAPI/getEmployees.php');
   }
 
+  getEmployeeById(id:number) {
+    return this.http.get<Employee>('http://localhost/employeeAPI/getEmployees.php?id='+ id);
+  }
+
   deleteEmployeeById(id:number) {
     return this.http.delete<Employee[]>('http://localhost/employeeAPI/deleteEmployee.php?id=' + id);
   }
 
   insertEmployee(employee:Employee) {
     return this.http.post<Employee>('http://localhost/employeeAPI/insertEmployee.php', employee);
+  }
+
+  updateEmployee(employee:Employee) {
+    return this.http.post<Employee>('http://localhost/employeeAPI/updateEmployee.php', employee);
   }
 }

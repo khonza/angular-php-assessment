@@ -1,0 +1,54 @@
+/* Mobile-first styles */
+.modal-header, .modal-footer {
+    text-align: center;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-control {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .text-danger {
+    color: #dc3545;
+  }
+  
+  /* Styles for tablets and up */
+  @media (min-width: 576px) {
+    .modal-body {
+      padding: 2rem;
+    }
+  }
+  
+  /* Styles for desktops and up */
+  @media (min-width: 768px) {
+    .modal-header, .modal-footer {
+      text-align: left;
+    }
+  
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .modal-body {
+      padding: 3rem;
+    }
+  }

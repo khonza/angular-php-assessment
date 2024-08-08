@@ -1,53 +1,67 @@
-	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Update Employee</h4>
-	</div>
-  <div>
-    <button type="button" class="btn btn-outline-secondary btn-sm" routerLink="['/']">Back</button>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Update Employee</h4>
+</div>
+
+<div class="modal-body">
+  <button type="button" class="btn btn-outline-secondary btn-sm" (click)="navigateHome()">Back</button>
+
+  <div *ngIf="employee">
+    <form [formGroup]="updateEmployeeForm" (ngSubmit)="onSubmit()" class="form">
+      <div class="card mt-3">
+        <div class="card-body">
+          <input id="id" formControlName="id" type="hidden">
+
+          <div class="form-group">
+            <label for="firstName">First Name(s)</label>
+            <input id="firstName" type="text" [ngModel]="employee.firstName" formControlName="firstName" class="form-control">
+            <div class="text-danger" *ngIf="updateEmployeeForm.get('firstName')?.invalid && (updateEmployeeForm.get('firstName')?.dirty || updateEmployeeForm.get('firstName')?.touched)">
+              <small *ngIf="updateEmployeeForm.get('firstName')?.errors?.['required']">First Name is required.</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input id="lastName" type="text" [(ngModel)]="employee.lastName" formControlName="lastName" class="form-control">
+            <div class="text-danger" *ngIf="updateEmployeeForm.get('lastName')?.invalid && (updateEmployeeForm.get('lastName')?.dirty || updateEmployeeForm.get('lastName')?.touched)">
+              <small *ngIf="updateEmployeeForm.get('lastName')?.errors?.['required']">Last Name is required.</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" [(ngModel)]="employee.email" type="email" formControlName="email" class="form-control">
+            <div class="text-danger">
+              <small *ngIf="updateEmployeeForm.get('email')?.errors?.['required'] && (updateEmployeeForm.get('email')?.dirty || updateEmployeeForm.get('email')?.touched)">
+                Email is required.
+              </small>
+              <small *ngIf="updateEmployeeForm.get('email')?.errors?.['email'] && (updateEmployeeForm.get('email')?.dirty || updateEmployeeForm.get('email')?.touched)">
+                Email is invalid.
+              </small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input id="phoneNumber" type="text" [(ngModel)]="employee.phoneNumber" formControlName="phoneNumber" maxlength="10" class="form-control">
+            <div class="text-danger" *ngIf="updateEmployeeForm.get('phoneNumber')?.invalid && (updateEmployeeForm.get('phoneNumber')?.dirty || updateEmployeeForm.get('phoneNumber')?.touched)">
+              <small *ngIf="updateEmployeeForm.get('phoneNumber')?.errors?.['required']">Phone Number is required.</small>
+              <small *ngIf="updateEmployeeForm.get('phoneNumber')?.errors?.['phoneNumberInvalid']">Phone Number must start with 0 and be exactly 10 digits.</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" [(ngModel)]="employee.message" formControlName="message" class="form-control" rows="3">{{employee?.message}}</textarea>
+            <div class="text-danger" *ngIf="updateEmployeeForm.get('message')?.invalid && (updateEmployeeForm.get('message')?.dirty || updateEmployeeForm.get('message')?.touched)">
+              <small *ngIf="updateEmployeeForm.get('message')?.errors?.['required']">Message is required.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-secondary">Save</button>
+      </div>
+    </form>
   </div>
-	<div class="modal-body">
-    @if(employee) {
-      <form #form="ngForm" [formGroup]="updateEmployeeForm" (ngSubmit)="onSubmit()" class="form">
-              <div class="card mt-3">
-                <div class="card-body">
-                  <div class="form-group">
-                      <label for="firstName">First Name(s)</label>
-                      <input id="firstName" type="text" [(ngModel)]="employee.firstName" formControlName="firstName" class="form-control" required>
-                      <div class="text-danger">
-                        <small>First Name is required.</small>
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <label for="lastName">Last Name</label>
-                      <input id="lastName" type="text" [(ngModel)]="employee.lastName" formControlName="lastName" class="form-control" required>
-                      <div class="text-danger">
-                        <small>Last Name is required.</small>
-                      </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" [(ngModel)]="employee.email" formControlName="email" class="form-control">
-                    <div class="text-danger">
-                      <small>Email is required.</small>
-                      <small>Email is invalid.</small>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                      <label for="phoneNumber">Phone Number</label>
-                      <input id="phoneNumber" type="number" [(ngModel)]="employee.phoneNumber" maxlength="10" formControlName="phoneNumber" class="form-control"required>
-                      <div class="text-danger">
-                        <small>Last Name is required.</small>
-                      </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea class="form-control" id="message" fromControlName="message" rows="3">{{employee.message}}</textarea>
-                  </div>
-                  <br />
-                </div>
-              </div>
-            </form>
-    }
-	</div>
-	<div class="modal-footer">
-		<button type="button" (click)="onSubmit()" class="btn btn-outline-secondary">Save</button>
-	</div>
+</div>

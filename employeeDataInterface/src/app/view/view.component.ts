@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { EventEmitter } from 'events';
 import { CreateComponent } from '../create/create.component';
 import { Router, RouterModule } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'view',
@@ -35,7 +36,8 @@ export class ViewComponent implements OnInit, OnDestroy{
 
   constructor(
     private employeeService: EmployeeService,
-    private router: Router
+    private router: Router,
+    private toast:ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -82,11 +84,11 @@ export class ViewComponent implements OnInit, OnDestroy{
 
   deleteEmployeeById(id:any):void {
     let employeeName:string = this.setEmployeeName(id);
-    if(confirm("Are you sure to delete "+ employeeName )) {
+    if(confirm("Are you sure you want to delete "+ employeeName )) {
       this.employeeService.deleteEmployeeById(id).subscribe(response =>
       {
-        this.employees = this.employees.filter(employee => employee.id != id)
-        console.log(`${employeeName} (${id}) has been deleted.`);
+        this.employees = this.employees.filter(employee => employee.id != id);
+        this.toast.success(`${employeeName} (${id}) has been deleted.`);
       });
     }
   }
