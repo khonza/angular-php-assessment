@@ -27,14 +27,7 @@ export class UpdateEmployeeComponent implements OnInit {
     private employeeService: EmployeeService,
     private router: Router
   ) {
-    this.updateEmployeeForm = this.formBuilder.group({
-      id: [{ value: '', disabled: true }],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, phoneNumberValidator()]],
-      message: ['', Validators.required]
-    });
+    this.initUpdateEmployeeForm();
   }
 
   ngOnInit(): void {
@@ -45,12 +38,34 @@ export class UpdateEmployeeComponent implements OnInit {
       }
     });
   }
+  
+  private initUpdateEmployeeForm(): void {
+    this.updateEmployeeForm = this.formBuilder.group({
+      id: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', [Validators.required, phoneNumberValidator()]],
+      message: ['', Validators.required]
+    });
+  }
+  
+  private setUpdateEmployeeFormValues(employee:any): void {
+    this.updateEmployeeForm.setValue({
+      'id': employee[0].id,
+      'firstName': employee[0].firstName,
+      'lastName': employee[0].lastName,
+      'email': employee[0].email,
+      'phoneNumber': employee[0].phoneNumber,
+      'message': employee[0].message
+    })
+  }
 
   loadEmployee(id: number): void {
     this.employeeService.getEmployeeById(id).subscribe(
       (data: Employee) => {
         this.employee = data;
-        this.updateEmployeeForm.patchValue(this.employee);
+        this.setUpdateEmployeeFormValues(this.employee);
       }
     );
   }
