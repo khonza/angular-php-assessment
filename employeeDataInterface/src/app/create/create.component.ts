@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, OnDestroy, TemplateRef, ViewChild, CUSTOM_ELEMENTS_SCHEMA, Output, EventEmitter, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EmployeeService } from '../../services/employee.service';
@@ -21,6 +21,8 @@ import { phoneNumberValidator } from '../../models/phone-number.validator';
 })
 export class CreateComponent implements OnInit, OnDestroy {
   @ViewChild('addEmployee') addEmployeeTemplate: TemplateRef<any>;
+  @Output() newEmployeeEvent = new EventEmitter<string>();
+
   employeeDataForm: FormGroup;
   private modalService: NgbModal;
   private subscriptions: Subscription = new Subscription();
@@ -58,11 +60,16 @@ export class CreateComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.employeeService.insertEmployee(this.employeeDataForm.value).subscribe(
-        () => {
+        (response) => {
           this.toastr.success('New employee added', 'Success');
           this.employeeDataForm.reset();
+          this.newEmployeeEvent.emit('new employee added');
+          this.modalService.dismissAll();
         },
-        () => this.toastr.error('Failed to add employee')
+        () => {
+          this.toastr.error('Failed to add employee');
+          this.modalService.dismissAll();
+        }     
       )
     );
   }

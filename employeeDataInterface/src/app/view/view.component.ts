@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, OnDestroy, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EmployeeService } from '../../services/employee.service';
@@ -26,6 +26,7 @@ import { CreateComponent } from '../create/create.component';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ViewComponent implements OnInit, OnDestroy {
+  @Input() newEmployeeEvent = '';
   employees: Employee[] = [];
   private employeeSubscription: Subscription = new Subscription();
 
